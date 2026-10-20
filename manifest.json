@@ -1,0 +1,16 @@
+{
+  "name": "Kisan Drishti - Crop Disease Detection",
+  "short_name": "Kisan Drishti",
+  "description": "AI-Powered Crop Disease Detection & Bilingual Agronomy Advisory for Farmers",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#064e3b",
+  "theme_color": "#15803d",
+  "icons": [
+    {
+      "src": "assets/logo.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

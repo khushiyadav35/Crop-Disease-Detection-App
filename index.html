@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kisan Drishti (किसान दृष्टि) — Crop Disease Detection App for Farmers</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#064e3b">
+  <meta name="description" content="AI-Powered Crop Disease Detection & Agronomy Advisory for Farmers with Hindi Support">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation & Header -->
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="Kisan Drishti Logo">
+        <div>
+          <h1 data-i18n="appName">किसान दृष्टि</h1>
+          <p data-i18n="appSubtitle">फसल रोग पहचान एवं कृषि सलाह प्रणाली</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="tel:18001801551" class="helpline-badge">
+          <span>📞</span>
+          <span data-i18n="helpline">किसान हेल्पलाइन: 1800-180-1551 (टोल-फ्री)</span>
+        </a>
+        <div class="lang-toggle">
+          <button id="btnLangHi" class="lang-btn active">हिंदी</button>
+          <button id="btnLangEn" class="lang-btn">English</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Body Content -->
+  <main>
+
+    <!-- Hero Banner with Weather Advisory -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h2 data-i18n="heroTitle">अपनी फसल का पत्ता स्कैन करें और तुरंत सही इलाज पाएं</h2>
+        <p data-i18n="heroSubtitle">मोबाइल कैमरा या फोटो से पत्ती के रोग की पहचान करें (38 फसल रोग समर्थित)</p>
+      </div>
+      <div class="weather-widget">
+        <div class="weather-item">
+          <span class="label" data-i18n="tempLabel">तापमान</span>
+          <span class="val">27°C</span>
+        </div>
+        <div class="weather-item">
+          <span class="label" data-i18n="humidityLabel">आर्द्रता (उमस)</span>
+          <span class="val">68%</span>
+        </div>
+        <div class="weather-item">
+          <span class="label" data-i18n="sprayLabel">छिड़काव सलाह</span>
+          <span class="spray-safe-badge" data-i18n="spraySafe">✅ आज छिड़काव के लिए अनुकूल</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual Column Main Layout -->
+    <div class="app-grid">
+
+      <!-- LEFT COLUMN: Input Scanner (Camera / Upload / Samples) -->
+      <div class="card">
+        <div class="card-header">
+          <h3>
+            <span>🌿</span>
+            <span data-i18n="tabCamTitle">पत्ती स्कैनर एवं फोटो इनपुट</span>
+          </h3>
+        </div>
+
+        <!-- Mode Tabs -->
+        <div class="input-tabs">
+          <button id="tabCamera" class="tab-btn active" data-i18n="tabCamTitle">📸 कैमरा स्कैनर</button>
+          <button id="tabUpload" class="tab-btn" data-i18n="tabUpTitle">📁 फोटो अपलोड करें</button>
+          <button id="tabSamples" class="tab-btn" data-i18n="tabSamTitle">🧪 टेस्ट पत्तियां</button>
+        </div>
+
+        <!-- Camera Tab Pane -->
+        <div id="paneCamera" class="tab-pane active">
+          <div class="camera-box">
+            <video id="cameraStream" autoplay playsinline muted></video>
+            <div class="camera-guide" data-i18n="camGuide">पत्ते को फ्रेम के बीच में रखें और साफ फोटो लें</div>
+            <div id="laserScanner" class="laser-scanner"></div>
+          </div>
+          <div class="camera-controls">
+            <button id="btnStartCam" class="btn btn-secondary" style="display: none;" data-i18n="btnStartCamera">कैमरा शुरू करें</button>
+            <button id="btnCapture" class="btn btn-primary" data-i18n="btnCapture">पत्ती स्कैन करें</button>
+          </div>
+        </div>
+
+        <!-- Upload Tab Pane -->
+        <div id="paneUpload" class="tab-pane">
+          <input type="file" id="fileInput" accept="image/*" style="display: none;">
+          <div id="dropzone" class="dropzone">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📸</div>
+            <h4 data-i18n="tabUpTitle">फोटो चुनें या यहां खींचें</h4>
+            <p data-i18n="dragDropText">पत्ती की फोटो यहां खींचें या क्लिक करके चुनें</p>
+          </div>
+        </div>
+
+        <!-- Test Samples Tab Pane -->
+        <div id="paneSamples" class="tab-pane">
+          <div class="sample-grid">
+            <div class="sample-card" data-sample="tomato_late_blight">
+              <img src="assets/samples/tomato_late_blight.jpg" alt="Tomato Late Blight">
+              <div>
+                <span class="crop">टमाटर (Tomato)</span>
+                <span class="dis">पछेती झुलसा (Late Blight)</span>
+              </div>
+            </div>
+            <div class="sample-card" data-sample="potato_early_blight">
+              <img src="assets/samples/potato_early_blight.jpg" alt="Potato Early Blight">
+              <div>
+                <span class="crop">आलू (Potato)</span>
+                <span class="dis">अगेती झुलसा (Early Blight)</span>
+              </div>
+            </div>
+            <div class="sample-card" data-sample="corn_common_rust">
+              <img src="assets/samples/corn_common_rust.jpg" alt="Corn Common Rust">
+              <div>
+                <span class="crop">मक्का (Corn)</span>
+                <span class="dis">सामान्य रतुआ (Rust)</span>
+              </div>
+            </div>
+            <div class="sample-card" data-sample="apple_scab">
+              <img src="assets/samples/apple_scab.jpg" alt="Apple Scab">
+              <div>
+                <span class="crop">सेब (Apple)</span>
+                <span class="dis">पपड़ी रोग (Scab)</span>
+              </div>
+            </div>
+            <div class="sample-card" data-sample="tomato_healthy" style="grid-column: span 2;">
+              <img src="assets/samples/tomato_healthy.jpg" alt="Healthy Tomato">
+              <div>
+                <span class="crop">टमाटर (Tomato)</span>
+                <span class="dis">स्वस्थ पत्ता (Healthy Leaf)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Leaf Preview HUD -->
+        <div id="previewBox" class="preview-container" style="display: none;">
+          <img id="previewImg" class="preview-thumb" alt="Active Leaf Preview">
+          <div class="preview-details">
+            <h4 data-i18n="readyToAnalyze">तैयार: पत्ती का विश्लेषण किया जा रहा है...</h4>
+            <p>MobileNetV2 Neural Network Inference (224x224 RGB)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Diagnosis & Agronomy Advisory Card -->
+      <div class="card" id="resultCard">
+        <div class="card-header">
+          <h3>
+            <span>🩺</span>
+            <span>निदान एवं उपचार सलाह (Diagnosis & Cure)</span>
+          </h3>
+          <span style="font-size: 0.78rem; color: #059669; font-weight: 700;">MobileNetV2 • 98.4% Acc</span>
+        </div>
+
+        <!-- Placeholder when no leaf analyzed -->
+        <div id="resultPlaceholder" class="result-placeholder" style="display: none;">
+          <div class="icon">🌿</div>
+          <p data-i18n="placeholderText">रोग निदान एवं उपचार सलाह देखने के लिए बाएं पैनल से पत्ती स्कैन करें या टेस्ट पत्ती चुनें।</p>
+        </div>
+
+        <!-- Active Result View -->
+        <div id="resultContainer">
+          <!-- Main Disease Diagnosis Header -->
+          <div class="diagnosis-header">
+            <span id="diagSeverityBadge" class="status-badge badge-critical">टमाटर • अत्यंत गंभीर</span>
+            <div class="disease-title-row">
+              <div>
+                <h2 id="diagDiseaseName">टमाटर का पछेती झुलसा रोग (लेट ब्लाइट)</h2>
+                <p id="diagPathogen" class="pathogen">रोगजनक: Phytophthora infestans • फफूंद जनित</p>
+              </div>
+              <button id="ttsButton" class="tts-btn" data-i18n="listenVoice">🔊 आवाज में सुनें</button>
+            </div>
+
+            <!-- Confidence Meter -->
+            <div class="confidence-box">
+              <div class="confidence-header">
+                <span data-i18n="confidenceText">पहचान सटीकता:</span>
+                <span id="diagConfidenceVal" style="color: #059669;">98.4%</span>
+              </div>
+              <div class="confidence-bar">
+                <div id="diagConfidenceFill" class="confidence-fill" style="width: 98.4%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advisory Accordion Sections -->
+          <div class="advisory-body">
+
+            <!-- Symptoms -->
+            <div class="advise-block">
+              <div class="advise-block-header">
+                <span data-i18n="secSymptoms">🔍 रोग के मुख्य लक्षण</span>
+                <span>▼</span>
+              </div>
+              <div class="advise-content" id="txtSymptoms">
+                पत्तियों और तनों पर पानी से भीगे हुए गहरे भूरे या काले धब्बे। नम व ठंडे मौसम में तेजी से फैलाव और पत्तियों के निचले हिस्से पर सफेद फफूंद दिखना।
+              </div>
+            </div>
+
+            <!-- Organic Treatment -->
+            <div class="advise-block">
+              <div class="advise-block-header">
+                <span data-i18n="secOrganic">🌿 जैविक / प्राकृतिक उपचार (सस्ता व सुरक्षित)</span>
+                <span>▼</span>
+              </div>
+              <div class="advise-content" id="txtOrganic">
+                नीम का तेल (5 मिली/लीटर) थोड़े साबुन के साथ घोलकर छिड़कें। ट्राइकोडर्मा विरिडी (5 ग्राम/लीटर) का छिड़काव करें। प्रभावित पत्तियों को तुरंत तोड़कर खेत से दूर जला दें।
+              </div>
+            </div>
+
+            <!-- Chemical Treatment -->
+            <div class="advise-block">
+              <div class="advise-block-header">
+                <span data-i18n="secChemical">🧪 रासायनिक कीटनाशक / कवकनाशी (सटीक मात्रा)</span>
+                <span>▼</span>
+              </div>
+              <div class="advise-content" id="txtChemical">
+                मैनकोज़ेब 75% WP (2.5 ग्राम प्रति लीटर) या रिडोमिल गोल्ड (2 ग्राम प्रति लीटर पानी) का छिड़काव करें।
+              </div>
+            </div>
+
+            <!-- Prevention & Cultural Practices -->
+            <div class="advise-block">
+              <div class="advise-block-header">
+                <span data-i18n="secPrevention">🛡️ रोकथाम और सावधानियां (फसल चक्र व जल प्रबंधन)</span>
+                <span>▼</span>
+              </div>
+              <div class="advise-content" id="txtPrevention">
+                ऊपर से पानी देने (स्प्रिंकलर) से बचें, ड्रिप सिंचाई अपनाएं। पौधों के बीच 60 सेमी की दूरी रखें। आलू और मिर्च के साथ फसल चक्र न करें।
+              </div>
+            </div>
+
+            <!-- Fertilizer Advice -->
+            <div class="advise-block">
+              <div class="advise-block-header">
+                <span data-i18n="secFertilizer">🌾 पोषण एवं उर्वरक सलाह</span>
+                <span>▼</span>
+              </div>
+              <div class="advise-content" id="txtFertilizer">
+                उमस या ठंड में यूरिया (नाइट्रोजन) की अधिकता से बचें। पोटाश और बोरोन का संतुलित उपयोग करें ताकि पत्तियों की झिल्ली मजबूत बने।
+              </div>
+            </div>
+
+            <!-- Differential Top-3 Predictions -->
+            <div class="differential-box">
+              <p style="font-size: 0.82rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem;" data-i18n="topDifferential">
+                अन्य संभावित रोग (Top-3 तुलना):
+              </p>
+              <div id="differentialList"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <p style="font-weight: 700; color: white;">🌾 किसान दृष्टि (Kisan Drishti) — Crop Disease Detection App for Farmers</p>
+        <p data-i18n="footerProject">बी.टेक फाइनल ईयर प्रोजेक्ट • प्लांटविलेज डेटासेट पर प्रशिक्षित MobileNetV2 मॉडल</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/khushiyadav35/Crop-Disease-Detection-App" target="_blank">GitHub Repository</a>
+        <a href="tel:18001801551">Kisan Call Centre (1800-180-1551)</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/agronomy_db.js"></script>
+  <script src="js/tts.js"></script>
+  <script src="js/classifier.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
