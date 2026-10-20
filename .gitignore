@@ -80,4 +80,6 @@ data/PlantVillage/
 # Checkpoints & Weights (Keep only lightweight production ONNX in git)
 checkpoints/*.pth
 checkpoints/*.pt
+models/*.pt
+models/*.onnx.data
 *.ckpt
